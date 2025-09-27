@@ -1,0 +1,151 @@
+/* styles.css — Bookshelf App */
+
+/* ===== Reset & Tokens ===== */
+* { box-sizing: border-box; }
+:root{
+  --bg:#0f172a;
+  --card:#111827;
+  --muted:#94a3b8;
+  --text:#e5e7eb;    
+  --accent:#22d3ee;    
+  --accent-2:#a78bfa;
+  --danger:#ef4444;     
+  --success:#22c55e;
+  --shadow:0 10px 30px rgba(2,6,23,.5);
+  --radius:16px;
+  --radius-sm:12px;
+  --gap:16px;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(56,189,248,.15), transparent 40%),
+    radial-gradient(900px 600px at 120% 20%, rgba(167,139,250,.12), transparent 50%),
+    var(--bg);
+  color:var(--text);
+  font:500 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* ===== Header ===== */
+header{
+  position:sticky; top:0;
+  backdrop-filter:blur(6px);
+  background:rgba(15,23,42,.7);
+  border-bottom:1px solid rgba(148,163,184,.15);
+  z-index:10;
+}
+header h1{
+  margin:0; padding:20px 24px;
+  letter-spacing:.4px; font-weight:700;
+  font-size:clamp(20px,2.4vw,28px);
+  display:flex; align-items:center; gap:10px;
+}
+header h1::before{
+  content:""; inline-size:10px; block-size:10px; border-radius:999px;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow:0 0 20px var(--accent);
+}
+
+/* ===== Layout Base ===== */
+main{
+  max-width:1100px;
+  margin:32px auto;
+  padding:0 20px 60px;
+  display:grid;
+  gap:28px;
+}
+section{
+  background:linear-gradient(180deg, rgba(17,24,39,.6), rgba(17,24,39,.9));
+  border:1px solid rgba(148,163,184,.15);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:24px 20px;
+}
+section>h2{
+  margin:0 0 14px 0;
+  font-size:18px; letter-spacing:.3px; color:#f1f5f9;
+}
+
+/* ===== Forms ===== */
+form{ display:grid; gap:18px; }
+form div{ display:flex; flex-direction:column; gap:6px; }
+label{ color:var(--muted); font-size:14px; }
+
+input[type="text"],
+input[type="number"]{
+  width:100%;
+  padding:12px 14px;
+  border-radius:var(--radius-sm);
+  background:#0b1220; color:var(--text);
+  border:1px solid rgba(148,163,184,.25);
+  outline:none;
+  transition:border-color .2s, box-shadow .2s;
+}
+input[type="text"]:focus,
+input[type="number"]:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(34,211,238,.15);
+}
+input[type="checkbox"]{ transform:translateY(1px); accent-color:var(--accent); }
+
+button{
+  border:1px solid rgba(148,163,184,.25);
+  background:linear-gradient(180deg, #0b1220, #0f172a);
+  color:var(--text);
+  padding:10px 18px;
+  border-radius:12px;
+  cursor:pointer; font-weight:600; font-size:14px;
+  transition:transform .04s, box-shadow .2s, border-color .2s;
+  outline:none;
+}
+button:hover{ border-color:var(--accent); box-shadow:0 6px 18px rgba(34,211,238,.15); }
+button:active{ transform:translateY(1px); }
+#bookFormSubmit{
+  justify-self:start;
+  background:linear-gradient(135deg, rgba(34,211,238,.12), rgba(167,139,250,.12));
+  border:1px solid rgba(148,163,184,.35);
+}
+
+/* ===== Book Cards ===== */
+[data-testid="bookItem"]{
+  display:grid; gap:8px;
+  padding:18px; margin-block:12px;
+  background:linear-gradient(180deg, rgba(11,18,32,.9), rgba(17,24,39,.95));
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:14px;
+  box-shadow:0 6px 18px rgba(2,6,23,.35);
+}
+[data-testid="bookItem"] h3{ margin:0 0 6px 0; font-size:16px; }
+[data-testid="bookItem"] p{ margin:0 0 4px 0; color:var(--muted); font-size:14px; }
+[data-testid="bookItem"]>div{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+[data-testid="bookItemIsCompleteButton"]{ border-color:rgba(34,197,94,.4); }
+[data-testid="bookItemIsCompleteButton"]:hover{ box-shadow:0 6px 18px rgba(34,197,94,.18); }
+[data-testid="bookItemDeleteButton"]{ border-color:rgba(239,68,68,.4); }
+[data-testid="bookItemDeleteButton"]:hover{ box-shadow:0 6px 18px rgba(239,68,68,.2); }
+[data-testid="bookItemEditButton"]{ border-color:rgba(167,139,250,.4); }
+[data-testid="bookItemEditButton"]:hover{ box-shadow:0 6px 18px rgba(167,139,250,.2); }
+
+/* ===== A11y polish ===== */
+button:focus-visible, input:focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px;
+}
+::selection{ background:rgba(34,211,238,.25); }
+
+/* ===== Responsive Grid ===== */
+@media (min-width:960px){
+  main{
+    grid-template-columns:1.6fr 1.4fr;
+    grid-template-rows:auto auto auto;
+    grid-template-areas:
+      "add        add"
+      "incomplete search"
+      "complete   search";
+    align-items:start;
+  }
+  main>section:nth-of-type(1){ grid-area:add; }
+  main>section:nth-of-type(2){ grid-area:search; }
+  main>section:nth-of-type(3){ grid-area:incomplete; }
+  main>section:nth-of-type(4){ grid-area:complete; }
+}
